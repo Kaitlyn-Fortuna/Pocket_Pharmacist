@@ -7,21 +7,21 @@ import { motion } from "framer-motion";
 // Cognito integration – swap these with your real User Pool values
 // ------------------------------------------------------------------
 const COGNITO_CONFIG = {
-  cognitoDomain: "https://pocket-pharmacist.auth.us-east-1.amazoncognito.com/",
+  cognitoDomain: "pocket-pharmacist.auth.us-east-1.amazoncognito.com", // no https://, no trailing slash
   clientId: "35n5mj2g6io1gqj9pplcaekc6s",
   redirectUri: window.location.origin + "/Capture",
   scope: "openid email profile",
 };
 
 function buildCognitoUrl(type) {
-  const base = `https://${COGNITO_CONFIG.domain}/${type}`;
+  const base = https://${COGNITO_CONFIG.cognitoDomain}/${type}; // fixed: cognitoDomain
   const params = new URLSearchParams({
     client_id: COGNITO_CONFIG.clientId,
     response_type: "code",
     scope: COGNITO_CONFIG.scope,
     redirect_uri: COGNITO_CONFIG.redirectUri,
   });
-  return `${base}?${params.toString()}`;
+  return ${base}?${params.toString()};
 }
 
 // ------------------------------------------------------------------
