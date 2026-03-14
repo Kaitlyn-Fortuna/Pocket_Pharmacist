@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 // Cognito integration – swap these with your real User Pool values
 // ------------------------------------------------------------------
 const COGNITO_CONFIG = {
-  domain: "neswaomhx.auth.us-east-1.amazoncognito.com",
+  cognitoDomain = "https://pocket-pharmacist.auth.us-east-1.amazoncognito.com/";
   clientId: "35n5mj2g6io1gqj9pplcaekc6s",
   redirectUri: window.location.origin + "/Capture",
   scope: "openid email profile",
