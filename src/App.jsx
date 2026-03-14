@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from "r
 import PageNotFound from "./lib/PageNotFound";
 import BottomNav from "./components/shared/BottomNav";
 
+import CognitoCallback from "./path/to/CognitoCallback";  // Adjust the path as needed
 import Capture from "./pages/Capture";
 import Medications from "./pages/Medications";
 import Results from "./pages/Results";
@@ -24,7 +25,7 @@ function AppShell() {
         <Routes>
           <Route path="/" element={<Navigate to="/SignIn" replace />} />
           <Route path="/SignIn" element={<SignIn />} />
-          <Route path="/Capture" element={<Capture />} />
+          <Route path="/Capture" element={<CognitoCallback />} />
           <Route path="/Medications" element={<Medications />} />
           <Route path="/Results" element={<Results />} />
           <Route path="/Profile" element={<Profile />} />
