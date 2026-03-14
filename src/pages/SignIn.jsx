@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Zap, ShieldCheck, ArrowRight, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -44,6 +44,16 @@ export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [logoSrc, setLogoSrc] = useState("/Pocket Pharmacist.gif");
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setLogoSrc("/Pocket Pharmacist.png");
+    }, 1800); // adjust to match the length of your GIF animation
+
+    return () => clearTimeout(timeout);
+  }, []);
+
   const handleCognitoLogin = () => {
     window.location.href = buildCognitoUrl("login");
   };
@@ -71,9 +81,14 @@ export default function SignIn() {
           animate={{ opacity: 1, y: 0 }}
           className="relative text-center"
         >
-          <div className="h-16 w-16 rounded-3xl bg-white/15 backdrop-blur-sm flex items-center justify-center mx-auto mb-4">
-            <Zap className="w-8 h-8 text-white" />
+          <div className="h-16 w-24 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center mx-auto mb-8">
+            <img
+              src={logoSrc}
+              alt="Pocket Pharmacist"
+              className="w-24 h-24 rounded-full"
+            />
           </div>
+
           <h1 className="text-3xl font-extrabold tracking-tight mb-1">Pocket Pharmacist</h1>
           <p className="text-primary-foreground/80 text-sm">
             AI-powered medication safety at your fingertips
