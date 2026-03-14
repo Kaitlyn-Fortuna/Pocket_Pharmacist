@@ -87,8 +87,12 @@ export default function Capture() {
       {/* Header */}
       <div className="px-5 pt-6 pb-4">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-2xl bg-primary/10 flex items-center justify-center">
-            <Zap className="w-5 h-5 text-primary" />
+          <div className="h-10 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+            <img
+              src="/Pocket Pharmacist.png"
+              alt="Pocket Pharmacist"
+              className="w-12 h-12 rounded-full"
+            />
           </div>
           <div>
             <h1 className="text-xl font-bold text-foreground">Medication Scan</h1>
