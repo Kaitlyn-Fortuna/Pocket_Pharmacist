@@ -1,42 +1,44 @@
 const db = globalThis.__B44_DB__ || { auth:{ isAuthenticated: async()=>false, me: async()=>null }, entities:new Proxy({}, { get:()=>({ filter:async()=>[], get:async()=>null, create:async()=>({}), update:async()=>({}), delete:async()=>({}) }) }), integrations:{ Core:{ UploadFile:async()=>({ file_url:'' }) } } };
 
-import React, { useState } from "react";
-import { User, Mail, Phone, MapPin, Edit2, Save, X, LogOut } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { User, Mail, Phone, MapPin, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-
 export default function Profile() {
-  const [isEditing, setIsEditing] = useState(false);
-  const [form, setForm] = useState(null);
-  const queryClient = useQueryClient();
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
-  const { data: user, isLoading } = useQuery({
-    queryKey: ["me"],
-    queryFn: () => db.auth.me(),
-    onSuccess: (data) => {
-      if (!form) setForm({ full_name: data.full_name || "", phone: data.phone || "", location: data.location || "" });
-    },
-  });
-
-  const mutation = useMutation({
-    mutationFn: (data) => db.auth.updateMe(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["me"] });
-      setIsEditing(false);
-    },
-  });
-
-  const startEdit = () => {
-    setForm({ full_name: user?.full_name || "", phone: user?.phone || "", location: user?.location || "" });
-    setIsEditing(true);
+  const handleLogout = () => {
+    localStorage.removeItem("pp_user");
+    navigate("/SignIn");
   };
 
-  const cancelEdit = () => setIsEditing(false);
+  useEffect(() => {
+    const loadUser = async () => {
+      const stored = JSON.parse(localStorage.getItem("pp_user") || "null");
+      if (!stored?.email) {
+        setIsLoading(false);
+        return;
+      }
 
-  const saveEdit = () => mutation.mutate(form);
+      const response = await fetch("/entities/users.json");
+      const jsonUsers = response.ok ? await response.json() : [];
+      const localUsers = JSON.parse(localStorage.getItem("localUsers") || "[]");
+
+      const allUsers = [...jsonUsers, ...localUsers];
+      const found = allUsers.find(
+        (u) => u.email.toLowerCase() === stored.email.toLowerCase()
+      );
+
+      setUser(found ?? stored);
+      setIsLoading(false);
+    };
+
+    loadUser();
+  }, []);
 
   if (isLoading) {
     return (
@@ -59,12 +61,6 @@ export default function Profile() {
             <p className="text-xs text-muted-foreground">Your account details</p>
           </div>
         </div>
-        {!isEditing && (
-          <Button variant="outline" size="sm" onClick={startEdit} className="gap-1.5 rounded-xl">
-            <Edit2 className="w-3.5 h-3.5" />
-            Edit
-          </Button>
-        )}
       </div>
 
       {/* Avatar */}
@@ -96,15 +92,7 @@ export default function Profile() {
           <User className="w-4 h-4 text-muted-foreground shrink-0" />
           <div className="flex-1">
             <p className="text-xs text-muted-foreground mb-1">Full Name</p>
-            {isEditing ? (
-              <Input
-                value={form.full_name}
-                onChange={(e) => setForm((f) => ({ ...f, full_name: e.target.value }))}
-                className="h-9 rounded-xl bg-muted/40 text-sm"
-              />
-            ) : (
-              <p className="text-sm font-medium text-foreground">{user?.full_name || "—"}</p>
-            )}
+            <p className="text-sm font-medium text-foreground">{user?.full_name || "—"}</p>
           </div>
         </div>
 
@@ -122,16 +110,7 @@ export default function Profile() {
           <Phone className="w-4 h-4 text-muted-foreground shrink-0" />
           <div className="flex-1">
             <p className="text-xs text-muted-foreground mb-1">Phone</p>
-            {isEditing ? (
-              <Input
-                value={form.phone}
-                onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
-                placeholder="Add phone number"
-                className="h-9 rounded-xl bg-muted/40 text-sm"
-              />
-            ) : (
-              <p className="text-sm font-medium text-foreground">{user?.phone || "—"}</p>
-            )}
+            <p className="text-sm font-medium text-foreground">{user?.phone_number || "—"}</p>
           </div>
         </div>
 
@@ -140,37 +119,17 @@ export default function Profile() {
           <MapPin className="w-4 h-4 text-muted-foreground shrink-0" />
           <div className="flex-1">
             <p className="text-xs text-muted-foreground mb-1">Location</p>
-            {isEditing ? (
-              <Input
-                value={form.location}
-                onChange={(e) => setForm((f) => ({ ...f, location: e.target.value }))}
-                placeholder="Add location"
-                className="h-9 rounded-xl bg-muted/40 text-sm"
-              />
-            ) : (
-              <p className="text-sm font-medium text-foreground">{user?.location || "—"}</p>
-            )}
+            <p className="text-sm font-medium text-foreground">{user?.location || "—"}</p>
           </div>
         </div>
 
-        {/* Edit actions */}
-        {isEditing && (
-          <div className="flex gap-2 pt-1">
-            <Button variant="outline" size="sm" onClick={cancelEdit} className="flex-1 rounded-xl gap-1.5">
-              <X className="w-3.5 h-3.5" /> Cancel
-            </Button>
-            <Button size="sm" onClick={saveEdit} disabled={mutation.isPending} className="flex-1 rounded-xl gap-1.5 bg-primary hover:bg-primary/90">
-              <Save className="w-3.5 h-3.5" /> {mutation.isPending ? "Saving..." : "Save"}
-            </Button>
-          </div>
-        )}
       </motion.div>
 
       {/* Sign Out */}
       <Button
         variant="outline"
         className="w-full h-11 rounded-xl text-destructive border-destructive/30 hover:bg-destructive/5 gap-2"
-        onClick={() => db.auth.logout()}
+        onClick={handleLogout}
       >
         <LogOut className="w-4 h-4" />
         Sign Out
