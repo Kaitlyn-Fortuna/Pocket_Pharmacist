@@ -19,6 +19,17 @@ export default function SignIn() {
 
   const [logoSrc, setLogoSrc] = useState("/pocket-pharmacist.gif");
 
+  const handleTestLogin = () => {
+  const testUser = {
+    id: "test123",
+    name: "Test User",
+    email: "test@test.com"
+  };
+
+  localStorage.setItem("user", JSON.stringify(testUser));
+  window.location.href = "/dashboard";
+};
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       setLogoSrc("/pocket-pharmacist.png");
@@ -123,6 +134,10 @@ export default function SignIn() {
           >
             {isLoading ? "Signing in..." : "Sign in"}
           </Button>
+
+          <button onClick={handleTestLogin}>
+            Continue as Test User
+          </button>
           
           <div className="flex flex-col gap-2 pt-2">
             <button
