@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 const COGNITO_CONFIG = {
   cognitoDomain: "pocket-pharmacist.auth.us-east-1.amazoncognito.com", // no https://, no trailing slash
   clientId: "35n5mj2g6io1gqj9pplcaekc6s",
-  redirectUri: "http://localhost:5173/Capture",",
+  redirectUri: "http://localhost:5173/Capture",
   scope: "openid email profile",
 };
 
