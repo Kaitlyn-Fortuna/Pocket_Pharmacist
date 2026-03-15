@@ -1,0 +1,14 @@
+[
+  {
+    "email": "admin@gmail.com",
+    "password_hash": "MTIzNCE=", 
+    "role": "admin",
+    "full_name": "Admin User"
+  },
+  {
+    "email": "user@gmail.com",
+    "password_hash": "MTIzNCE=",
+    "role": "user",
+    "full_name": "Jane Doe"
+  }
+]
