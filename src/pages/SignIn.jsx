@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Zap, ShieldCheck, ArrowRight, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const features = [
   { icon: "📷", text: "Scan any pill bottle instantly" },
@@ -19,7 +20,60 @@ export default function SignIn() {
 
   const [logoSrc, setLogoSrc] = useState("/pocket-pharmacist.gif");
 
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
   
+  const handleTestLogin = () => { //THIS IS THE TEST USER LOGIN, REMOVE BEFORE SUBMITTING
+  const testUser = {
+    id: "test123",
+    name: "Test User",
+    email: "test@test.com"
+  };      
+localStorage.setItem("user", JSON.stringify(testUser));
+    window.location.href = "/Capture";
+  };      //END OF SECTION 1 HERE, REMOVE BEFORE SUBMITTING
+
+  const handleManualLogin = async (e) => {
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
+
+    try {
+      // 1. Fetch the data from your entities folder
+      // Note: This file must be in your 'public' folder to be fetchable this way
+      const response = await fetch('/entities/users.json'); 
+      
+      if (!response.ok) {
+        throw new Error("Could not load login records.");
+      }
+
+      const users = await response.json();
+
+      // 2. Find the user
+      const user = users.find(
+        (u) => u.email.toLowerCase() === email.toLowerCase().trim()
+      );
+
+      // 3. Check password (using your base64 logic from the code)
+      if (user && user.password_hash === btoa(password)) {
+        // Success!
+        localStorage.setItem("pp_user", JSON.stringify({ 
+          email: user.email, 
+          role: user.role, 
+          full_name: user.full_name 
+        }));
+        navigate("/Capture");
+      } else {
+        // Fail
+        setError("Invalid email or password.");
+      }
+    } catch (err) {
+      setError("Login failed. Please ensure the records file exists.");
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -29,13 +83,6 @@ export default function SignIn() {
     return () => clearTimeout(timeout);
   }, []);
 
-  const handleManualLogin = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    // TODO: Connect to your new authentication backend
-    await new Promise((r) => setTimeout(r, 1200));
-    setIsLoading(false);
-  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col max-w-md mx-auto">
@@ -126,6 +173,12 @@ export default function SignIn() {
             {isLoading ? "Signing in..." : "Sign in"}
           </Button>
           
+           {/* SECTION 2 OF TEST USER LOGIN, REMOVE BEFORE SUBMITTING */}
+          <button onClick={handleTestLogin}>
+            Continue as Test User
+          </button> {/* REMOVE BEFORE SUBMITTING */}  
+
+
           <div className="flex flex-col gap-2 pt-2">
             <button
               type="button"
