@@ -44,11 +44,11 @@ export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [logoSrc, setLogoSrc] = useState("/Pocket Pharmacist.gif");
+  const [logoSrc, setLogoSrc] = useState("/pocket-pharmacist.gif");
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setLogoSrc("/Pocket Pharmacist.png");
+      setLogoSrc("/pocket-pharmacist.png");
     }, 1800); // adjust to match the length of your GIF animation
 
     return () => clearTimeout(timeout);
