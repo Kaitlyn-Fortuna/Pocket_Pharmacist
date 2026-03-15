@@ -83,7 +83,7 @@ localStorage.setItem("user", JSON.stringify(testUser));
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setLogoSrc("/pocket-pharmacist.png");
+      setLogoSrc("pocket-pharmacist.png");
     }, 1800); 
 
     return () => clearTimeout(timeout);
