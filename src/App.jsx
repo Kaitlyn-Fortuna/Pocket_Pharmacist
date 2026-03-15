@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from "r
 import PageNotFound from "./lib/PageNotFound";
 import BottomNav from "./components/shared/BottomNav";
 
-import CognitoCallback from "./path/to/CognitoCallback";  // Adjust the path as needed
+import CognitoCallback from "./components/CognitoCallback";  // Adjust the path as needed
 import Capture from "./pages/Capture";
 import Medications from "./pages/Medications";
 import Results from "./pages/Results";
