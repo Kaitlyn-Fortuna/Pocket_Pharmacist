@@ -9,10 +9,11 @@ import Medications from "./pages/Medications";
 import Results from "./pages/Results";
 import Profile from "./pages/Profile";
 import SignIn from "./pages/SignIn";
+import CreateAccount from "./pages/CreateAccount";
 
 const queryClient = new QueryClient();
 
-const HIDE_NAV_ON = ["/SignIn"];
+const HIDE_NAV_ON = ["/SignIn", "/CreateAccount"];
 
 function AppShell() {
   const location = useLocation();
@@ -24,6 +25,7 @@ function AppShell() {
         <Routes>
           <Route path="/" element={<Navigate to="/SignIn" replace />} />
           <Route path="/SignIn" element={<SignIn />} />
+          <Route path="/CreateAccount" element={<CreateAccount />} />
           <Route path="/Capture" element={<Capture />} />
           <Route path="/Medications" element={<Medications />} />
           <Route path="/Results" element={<Results />} />

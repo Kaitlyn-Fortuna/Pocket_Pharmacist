@@ -47,14 +47,20 @@ localStorage.setItem("user", JSON.stringify(testUser));
         throw new Error("Could not load login records.");
       }
 
-      const users = await response.json();
+      const jsonUsers = await response.json();
 
-      // 2. Find the user
+      // 2. Get users from localStorage
+      const localUsers = JSON.parse(localStorage.getItem('localUsers') || '[]');
+
+      // 3. Combine users
+      const users = [...jsonUsers, ...localUsers];
+
+      // 4. Find the user
       const user = users.find(
         (u) => u.email.toLowerCase() === email.toLowerCase().trim()
       );
 
-      // 3. Check password (using your base64 logic from the code)
+      // 5. Check password (using your base64 logic from the code)
       if (user && user.password_hash === btoa(password)) {
         // Success!
         localStorage.setItem("pp_user", JSON.stringify({ 
@@ -189,6 +195,7 @@ localStorage.setItem("user", JSON.stringify(testUser));
             <button
               type="button"
               className="w-full text-sm text-muted-foreground hover:text-foreground text-center transition-colors"
+              onClick={() => navigate("/CreateAccount")}  
             >
               Don't have an account? Sign up
             </button>
