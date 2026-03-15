@@ -89,7 +89,7 @@ export default function Capture() {
         <div className="flex items-center gap-3">
           <div className="h-10 w-12 rounded-full bg-primary/10 flex items-center justify-center">
             <img
-              src="/pocket-pharmacist.png"
+              src="pocket-pharmacist.png"
               alt="Pocket Pharmacist"
               className="w-12 h-12 rounded-full"
             />
