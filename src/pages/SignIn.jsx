@@ -14,7 +14,7 @@ const COGNITO_CONFIG = {
 };
 
 function buildCognitoUrl(type) {
-  const base = `https://${COGNITO_CONFIG.cognitoDomain}/${type}`; // fixed: cognitoDomain
+   const base = 'https://${COGNITO_CONFIG.cognitoDomain}/${type}'; // fixed: cognitoDomain
   const params = new URLSearchParams({
     client_id: COGNITO_CONFIG.clientId,
     response_type: "code",
