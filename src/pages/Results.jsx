@@ -119,12 +119,10 @@ function FDASays({ medicationName }) {
                 target="_blank"
                 rel="noreferrer"
                 className="text-primary underline underline-offset-2"
-              >
+              
                 FDA Drug Database
-              </a>
-              .
-            </p>
-          </div>
+              </p>
+            </div>
         )}
 
         {!loading && fdaData && (
